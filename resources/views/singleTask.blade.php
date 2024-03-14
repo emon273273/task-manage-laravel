@@ -1,0 +1,1 @@
+<div>Hello this is single task with id {{$task->id}} and name is {{$task->title}}</div>
