@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-
+use Illuminate\Http\Response;
 
 
 class Task
@@ -57,23 +57,23 @@ $tasks = [
         '2023-03-04 12:00:00'
     ),
 ];
+Route::get('/', function () {
 
-Route::get('/', function () use($tasks) {
+    return redirect()->route('tasks.index');
+});
+Route::get('/tasks', function () use($tasks) {
     // dd($tasks);
     return view('welcome',[
         'tasks'=>$tasks,
     ]);
 })->name('tasks.index');
-Route::get('/{id}',function($id) use($tasks){
-    // return view('singleTask',['taskid'=>$tasks],$id);
-    $task=null;
-foreach($tasks as $t){
-    if($t->id==$id){
-        $task=$t;
-        break;
-    }
-}
-
-dd($task);
-    return view('singleTask',['task'=>$task]);
+Route::get('/tasks/{id}',function($id) {
+// \App\Models\Task::find($id);
+return view("show",['task'=>\App\Models\Task::find($id)]);
 })->name('tasks.show');
+
+Route::get("/collection",function() use($tasks){
+
+    $collection=collect($tasks);
+    return $collection;
+});
